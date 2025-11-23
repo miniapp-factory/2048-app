@@ -2,17 +2,24 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import sdk, { Context } from "@farcaster/miniapp-sdk";
+import { generateAttributionSuffix } from "@/lib/metadata";
 import { MiniAppSDK } from "@farcaster/miniapp-sdk/dist/types";
 
 export interface MiniAppContext {
   sdk: MiniAppSDK;
   context: Context.MiniAppContext | undefined;
   isInMiniApp: boolean | undefined;
+  getAttributionSuffix: (
+    codes: string[],
+    registryAddress?: string,
+    registryChainId?: number
+  ) => string;
 }
 const defaultSettings: MiniAppContext = {
   sdk,
   context: undefined,
   isInMiniApp: undefined,
+  getAttributionSuffix: () => "",
 };
 const MiniAppContext = createContext<MiniAppContext>(defaultSettings);
 
@@ -47,7 +54,16 @@ export function MiniAppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <MiniAppContext.Provider value={context}>
+    <MiniAppContext.Provider
+      value={{
+        ...context,
+        getAttributionSuffix: (
+          codes: string[],
+          registryAddress?: string,
+          registryChainId?: number
+        ) => generateAttributionSuffix(codes, registryAddress, registryChainId),
+      }}
+    >
       {children}
     </MiniAppContext.Provider>
   );
