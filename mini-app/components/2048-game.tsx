@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
-import { Share } from "@/components/share";
-import { MiniAppContext } from "@/components/context/miniapp-provider";
 import { url } from "@/lib/metadata";
 
 const GRID_SIZE = 4;
@@ -23,7 +21,8 @@ export default function Game2048() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [win, setWin] = useState(false);
-  const { sdk, isInMiniApp } = useContext(MiniAppContext);
+  const sdk = undefined;
+  const isInMiniApp = false;
 
   useEffect(() => {
     resetGame();
@@ -50,7 +49,7 @@ export default function Game2048() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [grid, gameOver, win]);
+  }, []);
 
   const addRandomTile = (g: number[][]) => {
     const empty = [];
