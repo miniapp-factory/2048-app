@@ -147,12 +147,8 @@ export default function Game2048() {
 
   const shareScore = () => {
     const text = `I scored ${score} in 2048! ${url}`;
-    if (isInMiniApp && sdk) {
-      sdk.actions.composeCast({ text });
-    } else {
-      // fallback: open share dialog
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, "_blank");
-    }
+    // fallback: open share dialog
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const tileColor = (value: number) => {
